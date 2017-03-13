@@ -1,4 +1,4 @@
-package crawler.request;
+package com.raul.bupt.request;
 
 import org.jsoup.nodes.Document;
 

@@ -1,6 +1,6 @@
-package crawler.request.impl;
+package com.raul.bupt.request.impl;
 
-import crawler.request.DocumentGetter;
+import com.raul.bupt.request.DocumentGetter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
