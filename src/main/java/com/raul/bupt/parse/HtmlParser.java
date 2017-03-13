@@ -14,10 +14,10 @@ public interface HtmlParser {
     /**
      * 从网页document所对应的element中获取所需要的内容
      *
-     * @param url
+     * @param doc
      * @return
      */
-    List<Article> getArticleList(String url);
+    List<Article> getArticleList(Document doc);
 
     /**
      * 获取下一页的对应链接url
@@ -25,5 +25,13 @@ public interface HtmlParser {
      * @param doc
      * @return
      */
-    String getNextPageUrk(Document doc);
+    String getNextPageUrl(Document doc);
+
+    /**
+     * 获取对应文章的url
+     *
+     * @param doc
+     * @return
+     */
+    String getArticleContent(Document doc);
 }

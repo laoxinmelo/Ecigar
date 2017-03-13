@@ -2,15 +2,12 @@ package com.raul.bupt.parse.impl;
 
 import com.raul.bupt.dataobject.Article;
 import com.raul.bupt.parse.HtmlParser;
-import com.raul.bupt.request.DocumentGetter;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2017/3/13.
@@ -18,8 +15,6 @@ import java.util.Random;
 public class HtmlParserImpl implements HtmlParser {
 
     private static final String BASIC_URL = "http://chuansong.me";
-
-    private static final String START_URL = "http://chuansong.me/account/ecigbar";
 
     /**
      * html的对应标签
@@ -37,35 +32,43 @@ public class HtmlParserImpl implements HtmlParser {
     private static final String TITLE_LINK_MARK = "question_link";
     //文章时间所对应class标签
     private static final String TIME_MARK = "timestamp";
+    //文章内容所对应class标签
+    private static final String CONTENT_MARK = "rich_media_content ";
+
+    private static final String NEXT_PAGE = "下一页";
 
 
-    @Resource(name = "documentgetter")
-    private DocumentGetter documentGetter;
+    /**
+     * 获取下一页的对应链接url
+     *
+     * @param doc
+     * @return
+     */
+    public String getNextPageUrl(Document doc) {
 
-    @Resource(name = "random")
-    private Random random;
+        String nextPageUrl = null;
 
+        Elements elements = doc.select(A_TAG);
+        for(Element element:elements) {
+            if(element.text().trim().equals(NEXT_PAGE)) {
+                nextPageUrl = BASIC_URL + element.attr(HREF_LABEL);
+                break;
+            }
+        }
 
+        return nextPageUrl;
+
+    }
 
 
 
     /**
      * 从网页document所对应的element中获取所需要的内容
      *
-     * @param url
+     * @param doc
      * @return
      */
-    public List<Article> getArticleList(String url) {
-
-        Document doc = documentGetter.getDocument(url);
-        if(doc == null) {
-            int sleepSecond = random.nextInt(100);
-            try {
-                Thread.sleep(sleepSecond);
-            }catch (InterruptedException e) {e.printStackTrace();}
-
-            return null;
-        }
+    public List<Article> getArticleList(Document doc) {
 
         List<Article> articleList = new ArrayList<Article>();
         Elements elements = doc.select(DIV_TAG);
@@ -98,10 +101,32 @@ public class HtmlParserImpl implements HtmlParser {
                     }
                 }
 
-                System.out.println(article);
+                articleList.add(article);
             }
         }
 
-        return null;
+        return articleList;
     }
+
+    /**
+     * 获取对应文章的url
+     *
+     * @param doc
+     * @return
+     */
+    public String getArticleContent(Document doc) {
+
+        String content = "";
+
+        Elements elements = doc.select(DIV_TAG);
+        for(Element element:elements) {
+            if(element.attr(CLASS_LABEL).equals(CONTENT_MARK)) {
+                content = element.text().trim();
+                break;
+            }
+        }
+
+        return content;
+    }
+
 }
