@@ -7,6 +7,12 @@ import org.jsoup.nodes.Document;
  */
 public interface DocumentGetter {
 
+    /**
+     * 访问url，并将其解析为Document类
+     *
+     * @param url
+     * @return
+     */
     Document getDocument(String url);
 
 }
