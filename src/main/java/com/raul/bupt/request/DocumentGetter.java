@@ -17,4 +17,10 @@ public interface DocumentGetter {
      */
     Document getDocument(String url);
 
+    /**
+     * 设置代理ip
+     *
+     */
+    void setProxy();
+
 }

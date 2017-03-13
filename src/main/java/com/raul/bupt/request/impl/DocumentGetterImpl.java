@@ -7,9 +7,9 @@ import org.jsoup.nodes.Document;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import org.jsoup.Connection;
+
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/3/13.
@@ -21,7 +21,7 @@ public class DocumentGetterImpl implements DocumentGetter {
 
     private static final String IP_PROXY_PATH = "proxy/ip.txt";
 
-    private static final String SPLIT_MARK = ":";
+    private static final String PORT = "16816";
 
     @Resource(name = "random")
     Random random;
@@ -42,6 +42,7 @@ public class DocumentGetterImpl implements DocumentGetter {
 
             while(temp != null) {
                 ipList.add(temp);
+                System.out.println(temp);
                 temp = bufferedReader.readLine();
             }
 
@@ -52,18 +53,17 @@ public class DocumentGetterImpl implements DocumentGetter {
         }
     }
 
-
-    private void setProxy() {
+    /**
+     * 设置代理ip
+     *
+     */
+    public void setProxy() {
 
         int ipIndex = random.nextInt(IP_LIST.size());
         String ipSelect = IP_LIST.get(ipIndex);
 
-        String ip = ipSelect.substring(0,ipSelect.lastIndexOf(SPLIT_MARK));
-        String port = ipSelect.substring(ipSelect.lastIndexOf(SPLIT_MARK)+1);
-
-        System.getProperties().setProperty("http.proxyHost", ip);
-        System.getProperties().setProperty("http.proxyPort", port);
-
+        System.getProperties().setProperty("http.proxyHost", ipSelect);
+        System.getProperties().setProperty("http.proxyPort", PORT);
     }
 
     /**
@@ -78,15 +78,17 @@ public class DocumentGetterImpl implements DocumentGetter {
 
         try{
 
-            setProxy();
+            Connection conn = Jsoup.connect(url);
 
-            doc = Jsoup.connect(url)
-                    .ignoreContentType(true)
-                    .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31")
-                    .timeout(20000)
-                    //.cookies(cookies)
-                    .get();
+            //配置头文件
+            Map<String, String> header = new HashMap<String, String>();
+            header.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0");
+//            header.put("Accept", "  text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+//            header.put("Accept-Language", "zh-cn,zh;q=0.5");
+//            header.put("Connection", "keep-alive");
+            header.put("Accept-Encoding","gzip");
 
+            doc = conn.ignoreContentType(true).data(header).timeout(20000).get();
 
         } catch(Exception e) {
             e.printStackTrace();

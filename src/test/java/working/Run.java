@@ -60,29 +60,30 @@ public class Run {
 
             url = nextUrl;
 
-
+            documentGetter.setProxy();
             Document doc = documentGetter.getDocument(url);
+
 
             if(doc == null) {
                 url = "";
                 continue;
             }
 
-            List<Article> pageArticleList = htmlParser.getArticleList(doc);
-            for(Article article:pageArticleList) {
-                String articleLink = article.getLink();
-
-                Document articleDoc = documentGetter.getDocument(articleLink);
-                if(articleDoc == null) {
-                    continue;
-                }
-
-                String content = htmlParser.getArticleContent(articleDoc);
-                article.setContent(content);
-
-                System.out.println(article);
-                articleList.add(article);
-            }
+//            List<Article> pageArticleList = htmlParser.getArticleList(doc);
+//            for(Article article:pageArticleList) {
+//                String articleLink = article.getLink();
+//
+//                Document articleDoc = documentGetter.getDocument(articleLink);
+//                if(articleDoc == null) {
+//                    continue;
+//                }
+//
+//                String content = htmlParser.getArticleContent(articleDoc);
+//                article.setContent(content);
+//
+//                System.out.println(article);
+//                articleList.add(article);
+//            }
 
             System.out.println("当前爬取第" + pageNum + "页：已完成页面 " + url + " 的爬取； 当前article的数量为：" + articleList.size() + "...");
 

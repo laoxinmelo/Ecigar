@@ -2,7 +2,6 @@ package com.raul.bupt.parse;
 
 import com.raul.bupt.dataobject.Article;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.List;
 
