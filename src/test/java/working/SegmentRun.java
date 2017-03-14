@@ -14,7 +14,6 @@ import java.io.*;
 public class SegmentRun {
 
     private static final String articleSavePath = "article/afterProcess.txt";
-
     private static final int contentIndex = 2;
 
     public static void main(String[] args) throws IOException{

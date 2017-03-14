@@ -20,9 +20,6 @@ import java.util.List;
  */
 public class CrawleRun {
 
-
-
-
     public static void main(String[] args) throws IOException{
 
         /**
