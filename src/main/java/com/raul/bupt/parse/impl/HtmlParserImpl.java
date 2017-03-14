@@ -33,7 +33,7 @@ public class HtmlParserImpl implements HtmlParser {
     //文章时间所对应class标签
     private static final String TIME_MARK = "timestamp";
     //文章内容所对应class标签
-    private static final String CONTENT_MARK = "rich_media_content ";
+    private static final String CONTENT_MARK = "rich_media_content";
 
     private static final String NEXT_PAGE = "下一页";
 
@@ -120,7 +120,7 @@ public class HtmlParserImpl implements HtmlParser {
 
         Elements elements = doc.select(DIV_TAG);
         for(Element element:elements) {
-            if(element.attr(CLASS_LABEL).equals(CONTENT_MARK)) {
+            if(element.attr(CLASS_LABEL).contains(CONTENT_MARK)) {
                 content = element.text().trim();
                 break;
             }

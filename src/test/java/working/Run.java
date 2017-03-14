@@ -68,7 +68,7 @@ public class Run {
                     continue;
                 }
 
-                String content = htmlParser.getArticleContent(articleDoc);
+                String content = htmlParser.getArticleContent(articleDoc).replaceAll("\t","");
                 article.setContent(content);
 
                 System.out.println(article);
