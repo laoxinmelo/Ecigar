@@ -18,6 +18,8 @@
 
     <bean id = "htmlparser" class="com.raul.bupt.parse.impl.HtmlParserImpl"></bean>
 
+    <bean id = "wordparticiple" class="com.raul.bupt.segment.impl.WordParticipleImpl"></bean>
+
     <bean id = "random" class="java.util.Random"></bean>
 
 </beans>
