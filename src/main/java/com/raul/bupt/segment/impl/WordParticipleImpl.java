@@ -26,7 +26,6 @@ public class WordParticipleImpl  implements WordParticiple {
     //新词和关键词的对应数量
     private static final int wordNum = 10;
 
-
     /**
      * 对句子进行分词
      * @param sentence
