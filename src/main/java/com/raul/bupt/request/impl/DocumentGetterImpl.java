@@ -79,7 +79,6 @@ public class DocumentGetterImpl implements DocumentGetter {
      */
     public Document getDocument(String url) throws Exception {
 
-
         try{
 
             Connection conn = Jsoup.connect(url);
@@ -92,6 +91,7 @@ public class DocumentGetterImpl implements DocumentGetter {
             header.put("Connection", "keep-alive");
             header.put("Accept-Encoding","gzip, deflate, sdch");
             header.put("Host","chuansong.me");
+            header.put("Cookie","__utmt=1; Hm_lvt_a60dba8cb25e746640878eb1b20f67eb=1489419029,1489454961,1489454992,1489456197; __utma=240057436.306028526.1488943240.1489419029.1489454962.6; __utmb=240057436.29.10.1489454962; __utmc=240057436; __utmz=240057436.1489391585.3.3.utmcsr=baidu|utmccn=(organic)|utmcmd=organic|utmctr=%E4%BC%A0%E9%80%81%E9%97%A8");
 
             Document doc = conn.ignoreContentType(true).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36").data(header).timeout(20000).get();
 
@@ -101,7 +101,7 @@ public class DocumentGetterImpl implements DocumentGetter {
             }
 
             try{
-                Thread.sleep(sleepSecond);
+                Thread.sleep(sleepSecond*1000);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }

@@ -7,27 +7,30 @@ import org.jsoup.nodes.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2017/3/13.
  */
 public class Run {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         HtmlParser htmlParser = (HtmlParser) applicationContext.getBean("htmlparser");
         DocumentGetter documentGetter = (DocumentGetter) applicationContext.getBean("documentgetter");
-        Random random = (Random) applicationContext.getBean("random");
 
         String url = "";
         String nextUrl = "http://chuansong.me/account/ecigbar";
         List<Article> articleList = new ArrayList<Article>();
         int pageNum = 1;
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("article/articles.txt"));
 
         while((!url.equals(nextUrl)) && nextUrl!=null) {
 
@@ -54,8 +57,13 @@ public class Run {
                     articleDoc = documentGetter.getDocument(articleLink);
                 }catch (Exception e) {
 
-                    if(!e.getMessage().contains("404")) {
+                    System.out.println(e.getMessage() + "---" + articleLink);
+
+                    //404 error
+                    if(!e.getMessage().contains("404 error")) {
                         i = i - 1;
+                    }else {
+                        e.printStackTrace();
                     }
                     continue;
                 }
@@ -64,25 +72,16 @@ public class Run {
                 article.setContent(content);
 
                 System.out.println(article);
+                bw.write(article.toString() + "\r\n");
                 articleList.add(article);
             }
 
-//            int sleepSecond = random.nextInt(maxSleepTime);
-//            while(sleepSecond<minSleepTime) {
-//                sleepSecond = random.nextInt(maxSleepTime);
-//            }
-
             System.out.println("当前爬取第" + pageNum + "页：已完成页面 " + url + " 的爬取； 当前article的数量为：" + articleList.size() + "...");
-
-//            try{
-//                Thread.sleep(sleepSecond);
-//            }catch (InterruptedException e){
-//                e.printStackTrace();
-//            }
 
             nextUrl = htmlParser.getNextPageUrl(doc);
             pageNum += 1;
         }
 
+        bw.flush();  bw.close();
     }
 }
