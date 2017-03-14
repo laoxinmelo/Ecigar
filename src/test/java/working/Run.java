@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,39 +16,13 @@ import java.util.Random;
  */
 public class Run {
 
-    private static final String IP_PROXY_PATH = "proxy/ip.txt";
-
-    /**
-     * 获取代理ip
-     *
-     * @return
-     */
-    private static List<String> getIpList() {
-
-        List<String> ipList = null;
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(new File(IP_PROXY_PATH)));
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            String temp = bufferedReader.readLine();
-            while(temp != null) {
-                ipList.add(temp);
-                temp = bufferedReader.readLine();
-            }
-
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return ipList;
-        }
-    }
-
     public static void main(String[] args) {
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         HtmlParser htmlParser = (HtmlParser) applicationContext.getBean("htmlparser");
         DocumentGetter documentGetter = (DocumentGetter) applicationContext.getBean("documentgetter");
+        Random random = (Random) applicationContext.getBean("random");
 
         String url = "";
         String nextUrl = "http://chuansong.me/account/ecigbar";
@@ -61,40 +34,55 @@ public class Run {
             url = nextUrl;
 
             documentGetter.setProxy();
-            Document doc = documentGetter.getDocument(url);
 
-
-            if(doc == null) {
+            Document doc = null;
+            try {
+                doc = documentGetter.getDocument(url);
+            }catch (Exception e) {
                 url = "";
                 continue;
             }
 
-//            List<Article> pageArticleList = htmlParser.getArticleList(doc);
-//            for(Article article:pageArticleList) {
-//                String articleLink = article.getLink();
-//
-//                Document articleDoc = documentGetter.getDocument(articleLink);
-//                if(articleDoc == null) {
-//                    continue;
-//                }
-//
-//                String content = htmlParser.getArticleContent(articleDoc);
-//                article.setContent(content);
-//
-//                System.out.println(article);
-//                articleList.add(article);
+            List<Article> pageArticleList = htmlParser.getArticleList(doc);
+            for(int i=0;i<pageArticleList.size();i++) {
+
+                Article article = pageArticleList.get(i);
+                String articleLink = article.getLink();
+
+                Document articleDoc = null;
+                try{
+                    articleDoc = documentGetter.getDocument(articleLink);
+                }catch (Exception e) {
+
+                    if(!e.getMessage().contains("404")) {
+                        i = i - 1;
+                    }
+                    continue;
+                }
+
+                String content = htmlParser.getArticleContent(articleDoc);
+                article.setContent(content);
+
+                System.out.println(article);
+                articleList.add(article);
+            }
+
+//            int sleepSecond = random.nextInt(maxSleepTime);
+//            while(sleepSecond<minSleepTime) {
+//                sleepSecond = random.nextInt(maxSleepTime);
 //            }
 
             System.out.println("当前爬取第" + pageNum + "页：已完成页面 " + url + " 的爬取； 当前article的数量为：" + articleList.size() + "...");
 
+//            try{
+//                Thread.sleep(sleepSecond);
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//            }
+
             nextUrl = htmlParser.getNextPageUrl(doc);
             pageNum += 1;
         }
-
-
-
-
-//        htmlParser.getArticleList(url);
 
     }
 }

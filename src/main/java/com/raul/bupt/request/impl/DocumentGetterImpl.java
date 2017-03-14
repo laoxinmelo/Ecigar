@@ -23,6 +23,11 @@ public class DocumentGetterImpl implements DocumentGetter {
 
     private static final String PORT = "16816";
 
+    private static final int maxSleepTime = 5;
+
+    private static final int minSleepTime = 3;
+
+
     @Resource(name = "random")
     Random random;
 
@@ -42,7 +47,7 @@ public class DocumentGetterImpl implements DocumentGetter {
 
             while(temp != null) {
                 ipList.add(temp);
-                System.out.println(temp);
+//                System.out.println(temp);
                 temp = bufferedReader.readLine();
             }
 
@@ -72,9 +77,8 @@ public class DocumentGetterImpl implements DocumentGetter {
      * @param url
      * @return
      */
-    public Document getDocument(String url) {
+    public Document getDocument(String url) throws Exception {
 
-        Document doc = null;
 
         try{
 
@@ -82,19 +86,30 @@ public class DocumentGetterImpl implements DocumentGetter {
 
             //配置头文件
             Map<String, String> header = new HashMap<String, String>();
-            header.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0");
-//            header.put("Accept", "  text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-//            header.put("Accept-Language", "zh-cn,zh;q=0.5");
-//            header.put("Connection", "keep-alive");
-            header.put("Accept-Encoding","gzip");
 
-            doc = conn.ignoreContentType(true).data(header).timeout(20000).get();
+            header.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            header.put("Accept-Language", "zh-CN,zh;q=0.8");
+            header.put("Connection", "keep-alive");
+            header.put("Accept-Encoding","gzip, deflate, sdch");
+            header.put("Host","chuansong.me");
 
-        } catch(Exception e) {
-            e.printStackTrace();
-        }finally {
+            Document doc = conn.ignoreContentType(true).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36").data(header).timeout(20000).get();
+
+            int sleepSecond = random.nextInt(maxSleepTime);
+            while(sleepSecond<minSleepTime) {
+                sleepSecond = random.nextInt(maxSleepTime);
+            }
+
+            try{
+                Thread.sleep(sleepSecond);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
 
             return doc;
+
+        } catch(Exception e) {
+            throw e;
         }
     }
 }

@@ -15,7 +15,7 @@ public interface DocumentGetter {
      * @param url
      * @return
      */
-    Document getDocument(String url);
+    Document getDocument(String url) throws Exception;
 
     /**
      * 设置代理ip
