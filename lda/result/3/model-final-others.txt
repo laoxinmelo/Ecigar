@@ -1,0 +1,6 @@
+alpha=16.666666666666668
+beta=0.1
+ntopics=3
+ndocs=1910
+nwords=24820
+liters=1999

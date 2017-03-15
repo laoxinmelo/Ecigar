@@ -39,7 +39,7 @@ public class LDADataset {
 	// Instance Variables
 	//---------------------------------------------------------------
 	
-	public Dictionary localDict;			// local dictionary	
+	public Dictionary localDict;			// local dictionary
 	public Document [] docs; 		// a list of documents	
 	public int M; 			 		// number of documents
 	public int V;			 		// number of words
@@ -49,7 +49,7 @@ public class LDADataset {
 	public Map<Integer, Integer> lid2gid; 
 	
 	//link to a global dictionary (optional), null for train data, not null for test data
-	public Dictionary globalDict;	 		
+	public Dictionary globalDict;
 	
 	//--------------------------------------------------------------
 	// Constructor
@@ -75,7 +75,7 @@ public class LDADataset {
 	}
 	
 	public LDADataset(int M, Dictionary globalDict){
-		localDict = new Dictionary();	
+		localDict = new Dictionary();
 		this.M = M;
 		this.V = 0;
 		docs = new Document[M];	
@@ -199,7 +199,9 @@ public class LDADataset {
 			
 			LDADataset data = new LDADataset(M);
 			for (int i = 0; i < M; ++i){
-				line = reader.readLine();
+
+				line = reader.readLine().replaceAll("[0-9A-Za-z]","").trim();
+
 				data.setDoc(line, i);
 			}
 			
