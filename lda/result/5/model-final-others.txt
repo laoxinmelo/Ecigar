@@ -2,5 +2,5 @@ alpha=10.0
 beta=0.1
 ntopics=5
 ndocs=1910
-nwords=24820
+nwords=24816
 liters=1999

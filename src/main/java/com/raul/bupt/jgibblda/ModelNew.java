@@ -64,7 +64,7 @@ public class ModelNew {
 	public int K; //number of topics
 	public double alpha, beta; //LDA  hyperparameters
 	public int niters; //number of Gibbs sampling iteration
-	public int liter; //the iteration at which the model was savedâ€”â€”ä¿å­˜æ—¶çš„è¿­ä»£æ¬¡æ•°
+	public int liter; //the iteration at which the model was saved¡ª¡ª±£´æÊ±µÄµü´ú´ÎÊı
 	public int savestep; //saving period
 	public int twords; //print out top words per each topic
 	public int withrawdata;
@@ -75,7 +75,7 @@ public class ModelNew {
 
 	// Temp variables while sampling
 
-	//Vectorè¡¨ç¤ºä¸€ä¸ªé›†åˆè€Œä¸æ˜¯ä¸€ä¸ªæ•°ç»„
+	//Vector±íÊ¾Ò»¸ö¼¯ºÏ¶ø²»ÊÇÒ»¸öÊı×é
 	public Vector<Integer> [] z; //topic assignments for words, size M x doc.size()
 	protected int [][] nw; //nw[i][j]: number of instances of word/term i assigned to topic j, size V x K
 	protected int [][] nd; //nd[i][j]: number of words in document i assigned to topic j, size M x K
@@ -84,7 +84,7 @@ public class ModelNew {
 
 	// temp variables for sampling
 	protected double [] p;
-	public DecimalFormat df = new DecimalFormat("0.000000");//è®¾å®šå°æ•°çš„æ ¼å¼
+	public DecimalFormat df = new DecimalFormat("0.000000");//Éè¶¨Ğ¡ÊıµÄ¸ñÊ½
 
 	//---------------------------------------------------------------
 	//	Constructors
@@ -96,7 +96,7 @@ public class ModelNew {
 
 	/**
 	 * Set default values for variables
-	 * è®¾ç½®åˆå§‹å˜é‡
+	 * ÉèÖÃ³õÊ¼±äÁ¿
 	 */
 	public void setDefaultValues(){
 		wordMapFile = "wordmap.txt";
@@ -137,7 +137,7 @@ public class ModelNew {
 
 	/**
 	 * read other file to get parameters
-	 * è·å–åˆå§‹å‚æ•°
+	 * »ñÈ¡³õÊ¼²ÎÊı
 	 */
 	protected boolean readOthersFile(String otherFile){
 		//open file <model>.others to read:
@@ -190,7 +190,7 @@ public class ModelNew {
 
 	/**
 	 * read the tassign file
-	 * Tassignfileâ€”â€”å†’å·å‰è¡¨ç¤ºè¯¥è¯çš„idã€‚å†’å·åè¡¨ç¤ºè¯¥è¯å¯¹åº”çš„topic
+	 * Tassignfile¡ª¡ªÃ°ºÅÇ°±íÊ¾¸Ã´ÊµÄid¡£Ã°ºÅºó±íÊ¾¸Ã´Ê¶ÔÓ¦µÄtopic
 	 */
 	protected boolean readTAssignFile(String tassignFile){
 		try {
@@ -276,7 +276,7 @@ public class ModelNew {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
 			//write docs with topic assignments for words
-			for (i = 0; i < data.M; i++){    //Mâ€”â€”document size
+			for (i = 0; i < data.M; i++){    //M¡ª¡ªdocument size
 				for (j = 0; j < data.docs[i].length; ++j){
 					writer.write(data.docs[i].words[j] + ":" + z[i].get(j)+"	");
 				}
@@ -295,7 +295,7 @@ public class ModelNew {
 
 	/**
 	 * Save theta (topic distribution) for this model
-	 * documentå¯¹åº”ä¸åŒtopicä¸‹çš„æ¡ä»¶æ¦‚ç‡
+	 * document¶ÔÓ¦²»Í¬topicÏÂµÄÌõ¼ş¸ÅÂÊ
 	 */
 	public boolean saveModelTheta(String filename){
 		try{
@@ -318,7 +318,7 @@ public class ModelNew {
 
 	/**
 	 * Save word-topic distribution
-	 * wordå¯¹åº”ä¸åŒtopicä¸‹çš„æ¡ä»¶æ¦‚ç‡
+	 * word¶ÔÓ¦²»Í¬topicÏÂµÄÌõ¼ş¸ÅÂÊ
 	 */
 	public boolean saveModelPhi(String filename){
 		try {
@@ -366,7 +366,7 @@ public class ModelNew {
 
 	/**
 	 * Save model the most likely words for each topic
-	 * ä¿å­˜æ¯ä¸ªtopicä¸‹å¯¹åº”æ€§æœ€é«˜çš„word
+	 * ±£´æÃ¿¸ötopicÏÂ¶ÔÓ¦ĞÔ×î¸ßµÄword
 	 */
 	public boolean saveModelTwords(String filename){
 		try{
@@ -390,13 +390,13 @@ public class ModelNew {
 
 				//print topic
 				writer.write("Topic " + k + "th:\r\n");
-				Collections.sort(wordsProbsList);//æ’åº
+				Collections.sort(wordsProbsList);//ÅÅĞò
 
 				for (int i = 0; i < twords; i++){
 					if (data.localDict.contains((Integer)wordsProbsList.get(i).first)){
 						String word = data.localDict.getWord((Integer)wordsProbsList.get(i).first);
 
-						writer.write("â€”â€”â€”â€”" + word + " " + df.format(wordsProbsList.get(i).second) + "\r\n");
+						writer.write("¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª" + word + " " + df.format(wordsProbsList.get(i).second) + "\r\n");
 					}
 				}
 			} //end foreach topic
@@ -462,14 +462,14 @@ public class ModelNew {
 		if (beta1 >= 0)
 			beta = beta1;
 
-		niters = 2000;  /*è¿­ä»£æ¬¡æ•°*/
+		niters = 2000;  /*µü´ú´ÎÊı*/
 
 		dir = trainingModelDir;
 		if (dir.endsWith(File.separator))
 			dir = dir.substring(0, dir.length() - 1);
 
 		dfile = trDataFile;
-		twords = 50;   /*æ¯ä¸ªtopicä¸‹ç›¸å…³æ€§æœ€å¼ºçš„è¯çš„æ•°é‡*/
+		twords = 50;   /*Ã¿¸ötopicÏÂÏà¹ØĞÔ×îÇ¿µÄ´ÊµÄÊıÁ¿*/
 		wordMapFile = "wordmap.txt";
 
 	}
@@ -510,7 +510,7 @@ public class ModelNew {
 	public void initNewModelForEstimation(String trResultDir, String trDataFilePath){
 		//		if (!init(option))
 		//			return false;
-		//  trDataFilePathè¡¨ç¤ºè®­ç»ƒæ•°æ®é›†çš„ä½ç½®ï¼ŒtrResultDirè¡¨ç¤ºç»“æœä¿å­˜çš„è·¯å¾„
+		//  trDataFilePath±íÊ¾ÑµÁ·Êı¾İ¼¯µÄÎ»ÖÃ£¬trResultDir±íÊ¾½á¹û±£´æµÄÂ·¾¶
 		int m, n, w, k;
 		p = new double[K];
 
@@ -529,34 +529,34 @@ public class ModelNew {
 		// alpha, beta: from command line or default values
 		// niters, savestep: from command line or default values
 
-		nw = new int[V][K];    /*word i(ä»¥idå½¢å¼è¡¨ç¤º) æ˜¯å¦å±äºtopic kï¼Œè¡¨ç¤º0,1*/
+		nw = new int[V][K];    /*word i(ÒÔidĞÎÊ½±íÊ¾) ÊÇ·ñÊôÓÚtopic k£¬±íÊ¾0,1*/
 		for (w = 0; w < V; w++){
 			for (k = 0; k < K; k++){
 				nw[w][k] = 0;
 			}
 		}
 
-		nd = new int[M][K];     /*document jä¸­å±äºtopic kçš„wordçš„æ•°é‡*/
+		nd = new int[M][K];     /*document jÖĞÊôÓÚtopic kµÄwordµÄÊıÁ¿*/
 		for (m = 0; m < M; m++){
 			for (k = 0; k < K; k++){
 				nd[m][k] = 0;
 			}
 		}
 
-		nwsum = new int[K];    /*æ¯ä¸ªtopicå¯¹åº”çš„wordçš„æ•°é‡*/
+		nwsum = new int[K];    /*Ã¿¸ötopic¶ÔÓ¦µÄwordµÄÊıÁ¿*/
 		for (k = 0; k < K; k++){
 			nwsum[k] = 0;
 		}
 
-		ndsum = new int[M];    /*æ¯ä¸ªdocumentä¸­wordçš„æ•°é‡*/
+		ndsum = new int[M];    /*Ã¿¸ödocumentÖĞwordµÄÊıÁ¿*/
 		for (m = 0; m < M; m++){
 			ndsum[m] = 0;
 		}
 
 		z = new Vector[M];
 		for (m = 0; m < data.M; m++){
-			int N = data.docs[m].length; /*å¯¹åº”æ–‡æ¡£çš„wordçš„æ•°é‡*/
-			z[m] = new Vector<Integer>(); /*ä¸€ä¸ªä¸´æ—¶é›†ï¼Œä¿å­˜éšæœºç”Ÿæˆçš„topicå·*/
+			int N = data.docs[m].length; /*¶ÔÓ¦ÎÄµµµÄwordµÄÊıÁ¿*/
+			z[m] = new Vector<Integer>(); /*Ò»¸öÁÙÊ±¼¯£¬±£´æËæ»úÉú³ÉµÄtopicºÅ*/
 
 			//initilize for z
 			for (n = 0; n < N; n++)
