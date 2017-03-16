@@ -16,6 +16,9 @@ public class SegmentRun {
     private static final String articleSavePath = "article/afterProcess.txt";
     private static final int contentIndex = 2;
 
+    private static final String leftMark = "¡¾";
+    private static final String rightMark = "¡¿";
+
 
     public static void main(String[] args) throws IOException{
 
@@ -33,10 +36,9 @@ public class SegmentRun {
             String[] articleArray = temp.split("\t");
             String content = articleArray[contentIndex];
 
-            if (content.contains("¡¿") && content.contains("¡¾")) {
-//                System.out.println(content);
-                String str = content.substring(content.indexOf("¡¾"), content.indexOf("¡¿")+1);
-//                System.out.println(str);
+            if (content.contains(leftMark) && content.contains(rightMark)) {
+                String str = content.substring(content.indexOf(leftMark), content.indexOf(rightMark)+1);
+
 
                 content = content.replaceAll(str, "");
             }
