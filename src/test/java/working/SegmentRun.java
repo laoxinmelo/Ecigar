@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.*;
 
 /**
- * ÂàÜËØç‰∏ªÁ®ãÂ∫è
+ * ∑÷¥ ÷˜≥Ã–Ú
  *
  * Created by Administrator on 2017/3/14.
  */
@@ -15,6 +15,7 @@ public class SegmentRun {
 
     private static final String articleSavePath = "article/afterProcess.txt";
     private static final int contentIndex = 2;
+
 
     public static void main(String[] args) throws IOException{
 
@@ -26,17 +27,23 @@ public class SegmentRun {
 
         String temp = bufferedReader.readLine();
 
-
+        int sentenceNum = 0;
         BufferedWriter bw = new BufferedWriter(new FileWriter("article/articlesTraining.txt"));
         while(temp != null) {
             String[] articleArray = temp.split("\t");
             String content = articleArray[contentIndex];
 
-//            wordParticiple.findNewWords(content);
-//            wordParticiple.findKeyWords(content);
+            if (content.contains("°ø") && content.contains("°æ")) {
+//                System.out.println(content);
+                String str = content.substring(content.indexOf("°æ"), content.indexOf("°ø")+1);
+//                System.out.println(str);
+
+                content = content.replaceAll(str, "");
+            }
 
             String segmentSentence = wordParticiple.wordSegmentWithoutStopWord(content);
-            System.out.println(segmentSentence);
+            sentenceNum += 1;
+            System.out.println(sentenceNum + "  " + segmentSentence);
             bw.write(segmentSentence + "\r\n");
 
             temp = bufferedReader.readLine();

@@ -146,6 +146,7 @@ public class WordParticipleImpl  implements WordParticiple {
 
         String segmentSentence = wordSegment(sentence,true);
         String segmentSentenceWithoutStopWord = "";
+
         for(String wordUnit:segmentSentence.split(" ")) {
 
             if(!wordUnit.contains("/")) {
